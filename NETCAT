@@ -8,3 +8,8 @@ Netcat (ncat, nc):
 - Windows alternative is called PowerCat https://github.com/besimorhino/powercat
 - socat (https://linux.die.net/man/1/socat) is also used when needing to upgrade a shell to full interactive or when needing to forward ports and connect 
 to serial devices
+
+- Banner Grabbing: nc -nv <ip address> <port>
+  - -n: Do not do any DNS or service lookups on any specified addresses, hostnames or ports.
+  - -v: more verbose output
+

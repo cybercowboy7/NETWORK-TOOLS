@@ -1,0 +1,10 @@
+Netcat (ncat, nc):
+- Utilize to interact with TCP/UDP ports
+- Connect to shells with it
+- Example syntax:
+  netcat 10.10.10.10 22
+    - IP and port
+- This is called banner grabbing which helps ID what service is running on a particular port
+- Windows alternative is called PowerCat https://github.com/besimorhino/powercat
+- socat (https://linux.die.net/man/1/socat) is also used when needing to upgrade a shell to full interactive or when needing to forward ports and connect 
+to serial devices

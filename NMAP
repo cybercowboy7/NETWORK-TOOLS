@@ -17,3 +17,5 @@ NMAP: Network Mapper
   - locate scripts/<scripts string>
 
 - Banner Grabbing: nmap -sV --script=banner <ip address>
+- nmap -sV --script=banner -p21 10.10.10.0/24
+

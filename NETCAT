@@ -13,3 +13,14 @@ to serial devices
   - -n: Do not do any DNS or service lookups on any specified addresses, hostnames or ports.
   - -v: more verbose output
 
+
+- Setting up netcat listener for reverse shell:
+
+  - nc -lvnp 1234
+    - -l: Listen mode, to wait for connection
+    - -v: Verbose mode, so we know when we receive a connection
+    - -n: Disable DNS resolution and only connect from/to IPs, to speed up connection
+    - -p: Port number netcat is listening on
+
+
+

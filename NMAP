@@ -31,3 +31,124 @@ nmap -sC -p 22,80 -oA nibbles_script_scan <ip address>
 
 
 nmap -sV --script=http-enum -oA nibbles_nmap_http_enum <ip address>
+
+
+nmap -sS localhost
+- sS: SYN scan. Sends only SYN packet 
+
+
+HOST DISCOVERY:
+
+nmap 10.129.2.0/24 -sn -oA tnet | grep for | cut -d" " -f5
+-sn: Disables port scanning
+-oA tnet: Stores results in all formats starting with the name "tnet"
+
+sudo nmap -sn -oA tnet -iL hosts.lst | grep for | cut -d" " -f5
+-sn: Disbales port scanning
+-oA tnet: Stores results in all formats starting with the name "tnet"
+-iL: Performs defined scans against targets in provided 'hosts.lst' list
+
+sudo nmap -sn -oA tnet 10.129.2.18 10.129.2.19 10.129.2.20| grep for | cut -d" " -f5
+- Scan a smaller part of the network
+
+sudo nmap -sn -oA tnet 10.129.2.18-20| grep for | cut -d" " -f5
+- Same as above
+
+sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace 
+-PE: Performs the ping scan by using "ICMP echo requests" against the target
+--packet-trace: Shows all packets sent and received
+
+ sudo nmap 10.129.2.18 -sn -oA host -PE --reason 
+--reason: Displays the reason for specific result
+
+sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace --disable-arp-ping 
+--disable-arp-ping: 
+
+IDENTIFYING SYSTEMS BASED OFF TTL
+
+- Windows == 128
+- Linux == 255
+- MAC/Linux == 68
+
+
+HOST AND PORT SCANNING:
+
+- Different Port states:
+open	                  This indicates that the connection to the scanned port has been established. These connections can be TCP connections, UDP datagrams as well as SCTP associations.
+closed	                When the port is shown as closed, the TCP protocol indicates that the packet we received back contains an RST flag. This scanning method can also be used to determine if our target is alive or not.
+filtered	              Nmap cannot correctly identify whether the scanned port is open or closed because either no response is returned from the target for the port or we get an error code from the target.
+unfiltered	            This state of a port only occurs during the TCP-ACK scan and means that the port is accessible, but it cannot be determined whether it is open or closed.
+open|filtered	          If we do not get a response for a specific port, Nmap will set it to that state. This indicates that a firewall or packet filter may protect the port.
+closed|filtered	        This state only occurs in the IP ID idle scans and indicates that it was impossible to determine if the scanned port is closed or filtered by a firewall.
+
+sudo nmap 10.129.2.28 --top-ports=10
+- Scans top ten ports
+
+sudo nmap 10.129.2.28 --top-ports=10 
+-Pn: Disable the ICMP echo requests
+-n: DNS resolution
+--disable-arp-ping: disables arp ping
+
+- Connect Scan
+  -sT: utilizes 3-way handshake and is most accurate way of determining state of port
+    - Not stealthy
+sudo nmap 10.129.2.28 -p 443 --packet-trace --disable-arp-ping -Pn -n --reason -sT
+-Pn: Disable the ICMP echo requests
+-n: DNS resolution
+-sT: TCP connect scan
+
+sudo nmap 10.129.2.28 -p 139 --packet-trace -n --disable-arp-ping -Pn
+
+sudo nmap 10.129.2.28 -F -sU
+-F: Scans top 100 ports
+-sU: Performs a UDP scan
+
+sudo nmap 10.129.2.28 -sU -Pn -n --disable-arp-ping --packet-trace -p 137 --reason 
+
+
+sudo nmap 10.129.2.28 -Pn -n --disable-arp-ping --packet-trace -p 445 --reason  -sV
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

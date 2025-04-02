@@ -19,3 +19,15 @@ NMAP: Network Mapper
 - Banner Grabbing: nmap -sV --script=banner <ip address>
 - nmap -sV --script=banner -p21 10.10.10.0/24
 
+
+nmap -sV --open -oA nibbles_initial_scan <ip address>
+- sV: Service enumeration for default top 1000 ports
+--open: Only returns open ports
+-v: Verbose output
+-oA: Output all scan formats
+
+nmap -sC -p 22,80 -oA nibbles_script_scan <ip address>
+-sC: script scan utilizing the default scripts https://nmap.org/nsedoc/categories/default.html
+
+
+nmap -sV --script=http-enum -oA nibbles_nmap_http_enum <ip address>

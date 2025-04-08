@@ -122,6 +122,20 @@ To convert XML format to HTML you can utilize: xsltproc target.xml -o target.htm
 
 
 
+SERVICE ENUMERATION:
+
+sudo nmap <ip address> -p- -sV --stats-every=5s
+
+--stats-every=5s : Defines the periods of time the status should be shown
+
+OR
+
+-v / -vv : Increases the verbosity of the output
+
+
+10.129.2.49
+
+
 
 
 

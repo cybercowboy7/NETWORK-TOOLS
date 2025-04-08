@@ -170,15 +170,47 @@ sudo nmap 10.129.2.28 -p 80 -sV --script vuln
 
 
 
+PERFORMANCE:
+
+(Optimized)(RTT stands for Round-trip-time)
+sudo nmap 10.129.2.0/24 -F --initial-rtt-timeout 50ms --max-rtt-timeout 100ms
+-F: Scans top 100 ports
+--initial-rtt-timeout 50ms: Sets the specified time value as initial RTT timeout
+--max-rtt-timeout 100ms: Sets the specified time value as maximum RTT timeout
+
+
+(Not Optimized)
+sudo nmap 10.129.2.0/24 -F
+
+
+MAX RETRIES:
+
+To increase scan speed you can specify the rerty rate of sent packets (--max-retries). Default value 10, but we can reduce it to 0
+
+Default Scan: sudo nmap 10.129.2.0/24 -F | grep "/tcp" | wc -l
+
+Reduced Retries: sudo nmap 10.129.2.0/24 -F --max-retries 0 | grep "/tcp" | wc -l
 
 
 
+RATES:
+
+Setting minimum rate (--min-rate <number>)
+
+Default Scan: sudo nmap 10.129.2.0/24 -F -oN tnet.default
+  -oN: Saves the results in normal formats, starting the specified file name
+  --min-rate 300: Sets the minimum number of packets to be sent per second
+
+Default Scan Found Open Ports: cat tnet.default | grep "/tcp" | wc -l
+
+Optimized Scan Found Open Ports:  cat tnet.minrate300 | grep "/tcp" | wc -l
+
+Insane Scan: sudo nmap 10.129.2.0/24 -F -oN tnet.T5 -T 5
+  -T 5: Specifies the insnae timing template
 
 
 
-
-
-
+FIREWALL AND IDS/IPS EVASION:
 
 
 

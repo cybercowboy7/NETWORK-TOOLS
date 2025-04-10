@@ -212,9 +212,65 @@ Insane Scan: sudo nmap 10.129.2.0/24 -F -oN tnet.T5 -T 5
 
 FIREWALL AND IDS/IPS EVASION:
 
+- Determine FIrewalls and their rules:
+Firewalls have certain rules set to handle specific connections:
+  - Dropped: Ignored and no response from the host
+  - Rejected: Packets are returned with an RST flag
+    - These packets contain different types of ICMP error codes or contain nothing at all:
+      - Net Unreachable
+      - Net Prohibited
+      - Host Unreachable
+      - Host Prohibited
+      - Port Unreachable
+      - Proto Unreachable
+
+-sA: Much harder to filter for firewalls and IDS/IPS systems than regular SYN (-sS) or Connect Scans (-sT) because they only send a TCP packet with only the ACK flag.
+
+- When a port is closed or open, the host must respond with an RST flag.
+
+- All connection attempts with the SYN flag from external networks are usually blocked by firewalls
+
+- Packets with the ACK flag are often passed by the firewall because the firewall cannot determine whether the connection was first established from the external network or the internal network
+
+SYN-Scan: sudo nmap 10.129.2.28 -p 21,22,25 -sS -Pn -n --disable-arp-ping --packet-trace
+
+ACK-Scan: sudo nmap 10.129.2.28 -p 21,22,25 -sA -Pn -n --disable-arp-ping --packet-trace
 
 
+DETECT IDS/IPS:
 
+- One method to determine whether such IPS system is present in the target network is to scan from a single host (VPS). If at any time this host is blocked and has no access to the target network, 
+we know that the administrator has taken some security measures. Accordingly, we can continue our penetration test with another VPS.
+
+- Decoy scans: 
+  -D: Nmap generates various random IP addresses inserted into the IP header to disguise the origin of the packet sent
+    - Can generate random (RND) a specific number (for example: 5) of IP addresses separated by a colon (:).
+
+SCAN by using DECOYS: sudo nmap 10.129.2.28 -p 80 -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
+
+- Spoofed packets are often filtered out by ISPs and routers, even though they come from the same network range
+
+- Can specify VPS servers' IP addresses and use them in combination with "IP ID" manipulation in the IP headers to scan the target
+
+-S: Manually specify the source IP address to test if we get better results
+
+Testing firewall rule: sudo nmap 10.129.2.28 -n -Pn -p445 -O
+
+Scan by Using Different Source IP: sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+
+- By default, Nmap performs a reverse DNS resolution unless otherwise specified to find more important information about our target.
+
+- DNS queries are made over UDP 53
+
+- Can specify DNS servers ourselves (--dns-server <ns>, <ns>)
+  - Can be fundamental if we are in a DMZ
+  - Can use TCP port 53 as source port (--source-port) for our scans
+
+SYN-Scan of a Filtered Port:  sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace
+
+SYN-Scan From DNS Port:  sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+
+Connect to filtered port using Netcat: ncat -nv --source-port 53 10.129.2.28 50000
 
 
 
